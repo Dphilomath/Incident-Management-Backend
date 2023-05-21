@@ -87,11 +87,11 @@ function Home() {
 					 Our dedicated platform provides a streamlined and centralized approach to managing incidents, 
 					ensuring minimal disruption to our operations and optimal customer satisfaction.
 				</p>
-				<p class="lead">
+				{/* <p class="lead">
 					<a class="btn btn-primary btn-lg" href="#" role="button">
 						Learn more
 					</a>
-				</p>
+				</p> */}
 			</div>
 
 			<div class="row">
