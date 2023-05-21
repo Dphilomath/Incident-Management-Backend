@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Form,
 	Row,
@@ -11,32 +11,76 @@ import {
 	Container,
 } from "reactstrap";
 import base_url from "../api/Server";
+import { useLocation } from "react-router-dom";
 
 function AddIncident() {
-	const [incis, setIncidents] = useState({});
+
+	const location = useLocation();
+	// console.log(location.state);
+
+	// let incident = {id:"", inciName:"", description:"", inciPriority:"", inciCategory:"", inciStatus:"", userName:"", userId:"", userDept:""};
+	let incident = {};
+
+	const [incis, setIncidents] = useState(()=>{
+		if(location.state !== null)
+			return location.state;
+		else
+			return {};
+	});
+
+	if(location.state !== null)
+	{
+		incident = location.state;
+		// setIncidents(location.state);
+	}
 
 	function handleForm(e) {
-		console.log(incis);
-		postData(incis);
+		 console.log(incis);
+		
 
-		e.target.reset();
+		
+			if(Object.keys(incis).length === 0)
+				alert("No Changes Found!! You may return to Home if you dont intend to")
+			else{
+				if(location.state !== null)
+				{
+					
+					
+					updateData(incis);
+				}
+		
+			else{
+				postData(incis);
+				e.target.reset();
+			}
+			}
+		
+		
+		
 		e.preventDefault();
 	}
 
 	const handlePriority = (e) => {
 		// console.log(e.target.value);
+		incident.inciPriority = e.target.value;
 		setIncidents({ ...incis, inciPriority: e.target.value });
+		console.log(incis);
 	};
 
 	const handleStatus = (e) => {
+		incident.inciStatus = e.target.value;
 		setIncidents({ ...incis, inciStatus: e.target.value });
+		console.log(incis);
 	};
 
 	const handleCategory = (e) => {
+		incident.inciCategory = e.target.value;
 		setIncidents({ ...incis, inciCategory: e.target.value });
+		console.log(incis);
 	};
 
 	const handleDept = (e) => {
+		incident.userDept = e.target.value;
 		setIncidents({ ...incis, userDept: e.target.value })
 	}
 
@@ -54,10 +98,26 @@ function AddIncident() {
 		)
 	}
 
+	const updateData = (data)=>{
+		
+		console.log(data);
+		axios.put(`${base_url}/incidents`, data).then(
+			(response)=>{
+				console.log(response);
+				console.log("Success Updating Data")
+				alert("Incident Updated !!")
+			},
+			(error)=>{
+				alert("OOPS !! Some issue encountered. Please Try again")
+				console.log("Something went wrong while Posting To server")
+			}
+		)
+	}
+
 	return (
 		<div>
 			<h2 className="text-center" style={{ marginTop: "3%" }}>
-				Create New Incident
+				{ location.state === null? "Create New Incident" : "Update Incident"}
 			</h2>
 
 			<div style={{ margin: "4% 20%" }}>
@@ -69,8 +129,10 @@ function AddIncident() {
 								<Input
 									id="inciId"
 									name="inciId"
-									placeholder="Enter Id"
+									placeholder="System Generated"
 									type="text"
+									readOnly
+									value={incident.id}
 									onChange={(e) => {
 										setIncidents({ ...incis, id: e.target.value });
 									}}
@@ -85,6 +147,7 @@ function AddIncident() {
 									name="inciName"
 									placeholder="Enter Incident Name"
 									type="text"
+									defaultValue={incident.inciName}
 									onChange={(e) => {
 										setIncidents({ ...incis, inciName: e.target.value });
 									}}
@@ -99,6 +162,7 @@ function AddIncident() {
 							name="desc"
 							placeholder="Describe Incident"
 							type="textarea"
+							defaultValue={incident.description}
 							onChange={(e) => {
 								setIncidents({ ...incis, description: e.target.value });
 							}}
@@ -118,6 +182,7 @@ function AddIncident() {
 										type="radio"
 										value={"Critical"}
 										onChange={handlePriority}
+										checked={incis.inciPriority === "Critical"}
 									/>{" "}
 									<Label check>Critical</Label>
 								</FormGroup>
@@ -129,6 +194,7 @@ function AddIncident() {
 										type="radio"
 										value={"High"}
 										onChange={handlePriority}
+										checked={incis.inciPriority === "High"}
 									/>{" "}
 									<Label check>High</Label>
 								</FormGroup>
@@ -140,6 +206,7 @@ function AddIncident() {
 										type="radio"
 										value={"Medium"}
 										onChange={handlePriority}
+										checked={incis.inciPriority === "Medium"}
 									/>{" "}
 									<Label check>Medium</Label>
 								</FormGroup>
@@ -150,6 +217,7 @@ function AddIncident() {
 										name="radio1"
 										type="radio"
 										value={"Low"}
+										checked={incis.inciPriority === "Low"}
 										onChange={handlePriority}
 									/>{" "}
 									<Label check>Low</Label>
@@ -171,6 +239,7 @@ function AddIncident() {
 										type="radio"
 										value={"Hardware Issues"}
 										onChange={handleCategory}
+										checked={incis.inciCategory === "Hardware Issues"}
 									/>{" "}
 									<Label check>Hardware Issues</Label>
 								</FormGroup>
@@ -182,6 +251,7 @@ function AddIncident() {
 										type="radio"
 										value={"Software Issues"}
 										onChange={handleCategory}
+										checked={incis.inciCategory === "Software Issues"}
 									/>{" "}
 									<Label check>Software Issues</Label>
 								</FormGroup>
@@ -193,6 +263,7 @@ function AddIncident() {
 										type="radio"
 										value={"Accessories Issues"}
 										onChange={handleCategory}
+										checked={incis.inciCategory === "Accessories Issues"}
 									/>{" "}
 									<Label check>Accessories Issues</Label>
 								</FormGroup>
@@ -213,6 +284,7 @@ function AddIncident() {
 										type="radio"
 										value={"New"}
 										onChange={handleStatus}
+										checked={incis.inciStatus === "New"}
 									/>{" "}
 									<Label check>New</Label>
 								</FormGroup>
@@ -224,6 +296,7 @@ function AddIncident() {
 										type="radio"
 										value={"Inprogress"}
 										onChange={handleStatus}
+										checked={incis.inciStatus === "Inprogress"}
 									/>{" "}
 									<Label check>Inprogress</Label>
 								</FormGroup>
@@ -233,8 +306,9 @@ function AddIncident() {
 									<Input
 										name="radio3"
 										type="radio"
-										value={"Inprogress"}
+										value={"Resolved"}
 										onChange={handleStatus}
+										checked={incis.inciStatus === "Resolved"}
 									/>{" "}
 									<Label check>Resolved</Label>
 								</FormGroup>
@@ -244,8 +318,9 @@ function AddIncident() {
 									<Input
 										name="radio3"
 										type="radio"
-										value={"Inprogress"}
+										value={"Rejected"}
 										onChange={handleStatus}
+										checked={incis.inciStatus === "Rejected"}
 									/>{" "}
 									<Label check>Rejected</Label>
 								</FormGroup>
@@ -263,6 +338,7 @@ function AddIncident() {
 								name="userId"
 								placeholder="Enter User Id"
 								type="text"
+								defaultValue={incident.userId}
 								onChange={(e) => {
 								setIncidents({ ...incis, userId: e.target.value });
 							}}
@@ -276,6 +352,7 @@ function AddIncident() {
 								name="userName"
 								placeholder="Enter User Name"
 								type="text"
+								defaultValue={incident.userName}
 								onChange={(e) => {
 								setIncidents({ ...incis, userName: e.target.value });
 							}}
@@ -290,23 +367,23 @@ function AddIncident() {
 
 								<Col md={2}>
 									<FormGroup check>
-										<Input name="radio4" type="radio" value={"IT"} onChange={handleDept}/> <Label check>IT</Label>
+										<Input name="radio4" type="radio" value={"IT"} onChange={handleDept} checked={incis.userDept === "IT"}/> <Label check>IT</Label>
 									</FormGroup>
 								</Col>
 								<Col md={2}>
 									<FormGroup check>
-										<Input name="radio4" type="radio" value={"HR"} onChange={handleDept}/> <Label check>HR</Label>
+										<Input name="radio4" type="radio" value={"HR"} onChange={handleDept} checked={incis.userDept === "HR"}/> <Label check>HR</Label>
 									</FormGroup>
 								</Col>
 								<Col md={2}>
 									<FormGroup check>
-										<Input name="radio4" type="radio" value={"Marketing"} onChange={handleDept}/>{" "}
+										<Input name="radio4" type="radio" value={"Marketing"} onChange={handleDept} checked={incis.userDept === "Marketing"}/>{" "}
 										<Label check>Marketing</Label>
 									</FormGroup>
 								</Col>
 								<Col md={2}>
 									<FormGroup check>
-										<Input name="radio4" type="radio" value={"Finance"} onChange={handleDept}/>{" "}
+										<Input name="radio4" type="radio" value={"Finance"} onChange={handleDept} checked={incis.userDept === "Finance"}/>{" "}
 										<Label check>Finance</Label>
 									</FormGroup>
 								</Col>

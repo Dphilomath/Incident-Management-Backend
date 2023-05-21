@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	Card,
 	CardBody,
@@ -10,7 +11,16 @@ import {
     Container
 } from "reactstrap";
 
-function InciCard({ incident }) {
+function InciCard({ incident, handleDel }) {
+
+	const navigate = useNavigate();
+
+	const handleClick = () => {
+		navigate("/addIncident", {state:incident});
+	}
+
+	
+
 	return (
 		<div  class="col-3" style={{margin: "2% 0 2% 5%"}}>
 			<Card
@@ -42,8 +52,8 @@ function InciCard({ incident }) {
 				</CardBody>
                 <CardBody>
                     <Container className="text-center">
-                    <button type="button" class="btn btn-info" style={{color: 'white', marginRight:"10%"}}>Update</button>
-                    <button type="button" class="btn btn-danger" style={{marginLeft:"10%"}}>Delete</button>
+                    <button type="button" class="btn btn-info" style={{color: 'white', marginRight:"10%"}} onClick={handleClick}>Update</button>
+                    <button type="button" class="btn btn-danger" style={{marginLeft:"10%"}} onClick={() => {handleDel(incident.id)}}>Delete</button>
                     </Container>
                 </CardBody>
 			</Card>

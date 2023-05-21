@@ -5,40 +5,19 @@ import { Jumbotron, Button } from "reactstrap";
 import "../css/home.css";
 import base_url from "../api/Server";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 function Home() {
 
-  const [incidents, setInci] = useState([
-    // {
-    //   id:"89832",
-    //   title:"First Error",
-    //   description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ullamcorper malesuada proin libero nunc consequat interdum varius sit amet. Aliquet lectus proin nibh nisl condimentum id venenatis a condimentum. Mollis aliquam ut porttitor leo a diam sollicitudin. Donec ultrices tincidunt arcu non sodales neque sodales ut. Odio euismod lacinia at quis.",
-    //   priority:"High",
-    //   category:"software",
-    //   status:"Done",
-    //   uname:"Arif",
-    //   uid:"EC903",
-    //   udept:"IT"},
+  const location = useLocation();
 
-    //   {
-    //       id:"98057",
-	// 				title:"Second Error",
-	// 				description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ullamcorper malesuada proin libero nunc consequat interdum varius sit amet. Aliquet lectus proin nibh nisl condimentum id venenatis a condimentum. Mollis aliquam ut porttitor leo a diam sollicitudin. Donec ultrices tincidunt arcu non sodales neque sodales ut. Odio euismod lacinia at quis.",
-	// 				priority:"Low",
-	// 				category:"Hardware",
-	// 				status:"Done",
-	// 				uname:"Martis",
-	// 				uid:"CS903",
-	// 				udept:"IT"
-    //   }
-
-  ])
+  const [incidents, setInci] = useState([])
 
   const getAllIncidents = () => {
 	axios.get(`${base_url}/incidents`).then(
 		(res) => {
-			console.log(res.data);
-			setInci(res.data);
+			// console.log(typeof(res.data));
+				setInci(res.data);
 		},
 		(error) => {
 			console.log(error);
@@ -46,9 +25,53 @@ function Home() {
 	)
   }
 
+  const deleteIncident = (id) => {
+	axios.delete(`${base_url}/incidents/${id}`).then(
+		(res) => {
+			getAllIncidents();
+			alert("The Incident deleted Successfully");
+			
+		},
+		(error) => {
+			console.log(error);
+		}
+	)
+	
+  }
+
   useEffect(()=>{
+	
 	getAllIncidents();
   }, [])
+
+  	const getfiltered = ()=> {
+		axios.get(`${base_url}/incidents/user/${location.state.id}`).then(
+			(res) => {
+				console.log(res.data);
+				setInci(res.data);
+			},
+			(error) => {
+				console.log(error);
+			}
+		)
+	}
+
+   if(location.state !== null)
+   {
+	console.log("Vlaue has been passed !!")
+	// const filteredInci = incidents.filter((item) => { return item.userId.toString().includes(location.state.id) });
+	// setInci(filteredInci);
+	console.log(typeof(location.state.id));
+
+	if(location.state.id !== '')
+		getfiltered();
+	else
+		getAllIncidents();
+	
+	
+	console.log(incidents);
+	location.state = null;
+   }
 
 	return (
 		<div>
@@ -74,7 +97,7 @@ function Home() {
 			<div class="row">
 
       {
-        incidents.length > 0 ? incidents.map((item) => <InciCard incident={item} />) : "No Incidents"
+        incidents.length > 0 ? incidents.map((item) => <InciCard incident={item} handleDel={deleteIncident}/>) : <div className="text-center">No Incidents</div>
       }
         
 			</div>

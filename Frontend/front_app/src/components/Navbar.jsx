@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../css/navbar.css"
 import Loweslogo from "../resources/lowes_logo2.png"
 import Loweslogo2 from "../resources/lowes_logo.png"
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  const [searchVal, setSearch] = useState("");
+
+  const handleChange = (e)=> {
+     console.log("Search bar is activated");
+     setSearch(e.target.value);
+    //  console.log(e.target.value)
+     console.log(searchVal);
+     navigate("/", {state:{id : e.target.value}});
+  }
+
   return (
     <div>
     {/* <!-- Navbar --> */}
@@ -46,7 +58,7 @@ function Navbar() {
                   <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i class="fas fa-search"></i></span>All</a>
                 </li>
               </ul>
-              <input type="search" class="form-control" placeholder="Search By Id" aria-label="Search" />
+              <input type="search" class="form-control" placeholder="Search By UserId" aria-label="Search" value={searchVal} onChange={handleChange}/>
             </div>
             <a href="#!" class="text-white"><i class="fas fa-search ps-3"></i></a>
           </form>
