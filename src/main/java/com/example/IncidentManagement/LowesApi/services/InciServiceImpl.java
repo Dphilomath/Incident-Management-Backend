@@ -52,4 +52,11 @@ public class InciServiceImpl implements InciService {
 		return inci;
 	}
 
+	@Override
+	public void deleteIncident(long incidentId) {
+		
+		inciDao.deleteById(incidentId);
+		
+	}
+
 }

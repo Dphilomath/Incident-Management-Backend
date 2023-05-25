@@ -14,4 +14,6 @@ public interface InciService {
 	public Incident createIncident(Incident inci);
 
 	public Incident updateIncident(Incident inci);
+
+	public void deleteIncident(long incidentId);
 }
