@@ -23,6 +23,11 @@ public class InciServiceImpl implements InciService {
 
 	}
 	
+	public InciServiceImpl(IncidentDao inciDao) {
+		
+		this.inciDao = inciDao;
+	}
+
 	@Override
 	public List<Incident> getIncidents() {
 		

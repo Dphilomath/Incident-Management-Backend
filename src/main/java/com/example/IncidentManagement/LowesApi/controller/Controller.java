@@ -66,7 +66,7 @@ public class Controller {
 	}
 	
 	@DeleteMapping("/incidents/{incidentId}")
-	public ResponseEntity<HttpStatus> deleteCourse(@PathVariable String incidentId)
+	public ResponseEntity<HttpStatus> deleteIncident(@PathVariable String incidentId)
 	{
 		try {
 			this.inciService.deleteIncident(Long.parseLong(incidentId));
