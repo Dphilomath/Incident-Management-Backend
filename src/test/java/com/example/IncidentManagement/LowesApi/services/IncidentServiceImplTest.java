@@ -1,37 +1,32 @@
 package com.example.IncidentManagement.LowesApi.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import org.hibernate.mapping.List;
+import com.example.IncidentManagement.LowesApi.dao.IncidentDao;
+import com.example.IncidentManagement.LowesApi.entity.Incident;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.example.IncidentManagement.LowesApi.dao.IncidentDao;
-import com.example.IncidentManagement.LowesApi.entity.Incident;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class InciServiceImplTest {
-	
+class IncidentServiceImplTest {
+
 	@MockBean
 	private IncidentDao inciDao;
-	
+
 	@Autowired
-	private InciService inciservice;
-	
+	private IncidentService inciservice;
+
 	@BeforeEach
 	void setUp() throws Exception {
 
@@ -66,12 +61,12 @@ class InciServiceImplTest {
 		Optional<Incident> incident = Optional.of(new Incident(101, "CPU heated", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT"));
 		long id = incident.get().getId();
 		System.out.println("id = " + id);
-		
-		// Even Though the function getincident returns the Incident created we are defining what 
+
+		// Even Though the function getIncident returns the Incident created we are defining what
 		// .findById() returns for better code comprehension
 		when(inciDao.findById(id)).thenReturn(incident);
-		
-		assertThat(inciservice.getincident(id)).isEqualTo(incident);
+
+		assertThat(inciservice.getIncident(id)).isEqualTo(incident);
 	}
 	
 	@Test

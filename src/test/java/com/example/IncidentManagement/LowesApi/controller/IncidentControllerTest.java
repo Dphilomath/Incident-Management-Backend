@@ -1,13 +1,9 @@
 package com.example.IncidentManagement.LowesApi.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.example.IncidentManagement.LowesApi.dao.IncidentDao;
+import com.example.IncidentManagement.LowesApi.entity.Incident;
+import com.example.IncidentManagement.LowesApi.services.IncidentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,33 +12,32 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.example.IncidentManagement.LowesApi.dao.IncidentDao;
-import com.example.IncidentManagement.LowesApi.entity.Incident;
-import com.example.IncidentManagement.LowesApi.services.InciService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(value=Controller.class)
+@WebMvcTest(value = IncidentController.class)
+class IncidentControllerTest {
 
-class ControllerTest {
-	
 	@Autowired
 	private MockMvc mvc;
-	
+
 	@MockBean
-	private InciService inciServ;
-	
+	private IncidentService inciServ;
+
 	@MockBean
 	private IncidentDao inciDao;
 	
@@ -70,8 +65,8 @@ class ControllerTest {
 		
 		RequestBuilder request = MockMvcRequestBuilders.get("/incidents").accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mvc.perform(request).andReturn();
-		
-		String expected = this.asJsonString(list);
+
+		String expected = asJsonString(list);
 		String actual = result.getResponse().getContentAsString();
 		
 		assertThat(expected).isEqualTo(actual);
@@ -85,13 +80,13 @@ class ControllerTest {
 		
 		// Need to convert origData into Optional type. 
 		Optional<Incident> incident = Optional.ofNullable(origData);
-		Mockito.when(inciServ.getincident(Mockito.anyLong())).thenReturn(incident);
+		Mockito.when(inciServ.getIncident(Mockito.anyLong())).thenReturn(incident);
 		
 		RequestBuilder request = MockMvcRequestBuilders.get("/incidents/5").accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mvc.perform(request).andReturn();
 		
 		// We can't pass in incident in argument of asJsonString() because doing string serialization of Optional returns an unwanted result 
-		String expectRes = ControllerTest.asJsonString(origData);
+		String expectRes = IncidentControllerTest.asJsonString(origData);
 		String outputRes = result.getResponse().getContentAsString();
 		
 		assertThat(outputRes).isEqualTo(expectRes);
@@ -102,8 +97,8 @@ class ControllerTest {
 	@Test
 	void testCreateIncident() throws Exception {
 		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
-		String inputInJSON = this.asJsonString(incident);
+
+		String inputInJSON = asJsonString(incident);
 		
 		when(inciServ.createIncident(Mockito.any(Incident.class))).thenReturn(incident);
 		
@@ -120,8 +115,8 @@ class ControllerTest {
 	@Test
 	void testUpdateIncident() throws Exception {
 		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
-		String inputInJSON = this.asJsonString(incident);
+
+		String inputInJSON = asJsonString(incident);
 		
 		when(inciServ.createIncident(Mockito.any(Incident.class))).thenReturn(incident);
 		
@@ -134,8 +129,8 @@ class ControllerTest {
 		incident.setUserId(876);
 		incident.setInciPriority("Low");
 		incident.setInciStatus("Resolved");
-		
-		String updatedInputInJSON = this.asJsonString(incident);
+
+		String updatedInputInJSON = asJsonString(incident);
 		
 		when(inciServ.updateIncident(Mockito.any(Incident.class))).thenReturn(incident);
 		
@@ -165,8 +160,8 @@ class ControllerTest {
 		
 		RequestBuilder request = MockMvcRequestBuilders.get("/incidents/user/532").accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mvc.perform(request).andReturn();
-		 
-		String expectRes = ControllerTest.asJsonString(list);
+
+		String expectRes = IncidentControllerTest.asJsonString(list);
 		String outputRes = result.getResponse().getContentAsString();
 		
 		assertThat(outputRes).isEqualTo(expectRes);
