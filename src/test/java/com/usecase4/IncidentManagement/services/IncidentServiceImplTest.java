@@ -1,7 +1,9 @@
 package com.usecase4.IncidentManagement.services;
 
 import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.entity.Enums;
 import com.usecase4.IncidentManagement.entity.Incident;
+import com.usecase4.IncidentManagement.entity.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,27 +41,32 @@ class IncidentServiceImplTest {
 	@Test
 	void testGetAllIncident() {
 //		fail("Not yet implemented");
-		
+
 //		inciservice.getIncidents();
 //		verify(inciDao).findAll();
-		Incident incident1 = new Incident(17, "Server RX down", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT");
-		Incident incident2 = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+		Incident incident2 = new Incident(18, "DRC down", "random description 2", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 		java.util.List<Incident> list = new ArrayList<>();
 		list.add(incident1);
 		list.add(incident2);
-		
+
 		when(inciDao.findAll()).thenReturn(list);
-		
+
 		assertThat(inciservice.getIncidents()).isEqualTo(list);
-		
+
 	}
 	
 	@Test
 	void testGetIncident() {
-		
-		Optional<Incident> incident = Optional.of(new Incident(101, "CPU heated", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT"));
-		long id = incident.get().getId();
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
+		Optional<Incident> incident = Optional.of(incident1);
+		long id = incident.get().getIncidentId();
 		System.out.println("id = " + id);
 
 		// Even Though the function getIncident returns the Incident created we are defining what
@@ -68,46 +75,51 @@ class IncidentServiceImplTest {
 
 		assertThat(inciservice.getIncident(id)).isEqualTo(incident);
 	}
-	
+
 	@Test
-	void createIncidentTest()
-	{
-		Incident incident = new Incident(122, "CPU heated", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT");
-		
+	void createIncidentTest() {
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
+
 		// Even Though the function createIncident returns the Incident created we are defining what 
 		// .save() returns for better code comprehension
 		when(inciDao.save(incident)).thenReturn(incident);
-		
+
 		assertThat(inciservice.createIncident(incident)).isEqualTo(incident);
 	}
-	
+
 	@Test
-	void updateIncidentTest()
-	{
+	void updateIncidentTest() {
 //		Original incident that remains untouched to be compared
-		Incident origInci = new Incident(800, "System 331 Not working", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT");
-		
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident origInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 //		Incident to be Updated
-		Incident actualInci = new Incident(800, "System 331 Not working", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT");
-		
+		Incident actualInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 		inciDao.save(origInci);
-		
-		actualInci.setInciPriority("Low");
-		actualInci.setUserName("Chetna");
-		
-		
+
+		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>());
+		actualInci.setIncidentPriority(Enums.Priority.Low);
+		actualInci.setUser(user2);
+
+
 		assertThat(inciservice.updateIncident(actualInci)).isEqualTo(actualInci).isNotEqualTo(origInci);
 	}
-	
+
 	@Test
-	void deleteIncidentTest()
-	{
-		Incident incident = new Incident(800, "System 331 Not working", "abcdefgh", "High", "Hardware Issues", "New", 550, "Neha", "IT");
+	void deleteIncidentTest() {
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		inciDao.save(incident);
-		
-		inciservice.deleteIncident(incident.getId());
-		
-		assertThat(inciDao.findById(incident.getId())).isEmpty();
+
+		inciservice.deleteIncident(incident.getIncidentId());
+
+		assertThat(inciDao.findById(Integer.toUnsignedLong(incident.getIncidentId())).isEmpty());
 	}
 
 }

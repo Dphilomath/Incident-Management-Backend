@@ -39,27 +39,26 @@ public class IncidentController {
 	{
 		return this.incidentService.getIncident(Long.parseLong(incidentId));
 	}
-	
+
 	@PostMapping("/incidents")
 	public Incident createIncident(@RequestBody Incident inci) {
 
 		return this.incidentService.createIncident(inci);
 	}
-	
+
 	@PutMapping("/incidents")
 	public Incident updateIncident(@RequestBody Incident inci) {
 		return this.incidentService.updateIncident(inci);
 	}
-	
-	@GetMapping("/incidents/user/{userId}")
-	public ResponseEntity<List<Incident>> getIncidentsByUser(@PathVariable String userId){
-		
-		return new ResponseEntity<List<Incident>>(inciDao.findByUserId(Long.parseLong(userId)), HttpStatus.OK);
-	}
-	
+
+//	@GetMapping("/incidents/user/{userId}")
+//	public ResponseEntity<List<Incident>> getIncidentsByUser(@PathVariable String userId){
+//
+//		return new ResponseEntity<List<Incident>>(inciDao.findByUserId(Long.parseLong(userId)), HttpStatus.OK);
+//	}
+
 	@DeleteMapping("/incidents/{incidentId}")
-	public ResponseEntity<HttpStatus> deleteIncident(@PathVariable String incidentId)
-	{
+	public ResponseEntity<HttpStatus> deleteIncident(@PathVariable String incidentId) {
 		try {
 			this.incidentService.deleteIncident(Long.parseLong(incidentId));
 			return new ResponseEntity<>(HttpStatus.OK);

@@ -2,7 +2,9 @@ package com.usecase4.IncidentManagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.entity.Enums;
 import com.usecase4.IncidentManagement.entity.Incident;
+import com.usecase4.IncidentManagement.entity.User;
 import com.usecase4.IncidentManagement.services.IncidentService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,16 +33,17 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = IncidentController.class)
 class IncidentControllerTest {
-
+	@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 	@Autowired
-	private MockMvc mvc;
+	private MockMvc mockMvc;
+
 
 	@MockBean
 	private IncidentService inciServ;
 
 	@MockBean
 	private IncidentDao inciDao;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 	}
@@ -51,20 +54,21 @@ class IncidentControllerTest {
 
 	@Test
 	void testGetIncidents() throws Exception {
-		
-		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		Incident incident2 = new Incident(19, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 544, "Neha", "IT");
-		Incident incident3 = new Incident(20, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 1000, "Neha", "IT");
-		
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+
+		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+		Incident incident2 = new Incident(19, "Server DRC Up", "lorem ipsum dolor", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+		Incident incident3 = new Incident(20, "Server cracking", "makes wierd sound", Enums.Priority.Low, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 		List<Incident> list = new ArrayList<>();
-		list.add(incident);
+		list.add(incident1);
 		list.add(incident2);
 		list.add(incident3);
-		
+
 		when(inciServ.getIncidents()).thenReturn(list);
-		
+
 		RequestBuilder request = MockMvcRequestBuilders.get("/incidents").accept(MediaType.APPLICATION_JSON);
-		MvcResult result = mvc.perform(request).andReturn();
+		MvcResult result = mockMvc.perform(request).andReturn();
 
 		String expected = asJsonString(list);
 		String actual = result.getResponse().getContentAsString();
@@ -75,111 +79,116 @@ class IncidentControllerTest {
 
 	@Test
 	void testGetIncident() throws Exception {
-		
-		Incident origData = new Incident(5, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		Incident origData = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 		// Need to convert origData into Optional type. 
 		Optional<Incident> incident = Optional.ofNullable(origData);
 		Mockito.when(inciServ.getIncident(Mockito.anyLong())).thenReturn(incident);
-		
+
 		RequestBuilder request = MockMvcRequestBuilders.get("/incidents/5").accept(MediaType.APPLICATION_JSON);
-		MvcResult result = mvc.perform(request).andReturn();
-		
+		MvcResult result = mockMvc.perform(request).andReturn();
+
 		// We can't pass in incident in argument of asJsonString() because doing string serialization of Optional returns an unwanted result 
 		String expectRes = IncidentControllerTest.asJsonString(origData);
 		String outputRes = result.getResponse().getContentAsString();
-		
+
 		assertThat(outputRes).isEqualTo(expectRes);
-		
+
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
 	}
 
 	@Test
 	void testCreateIncident() throws Exception {
-		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
+		User user1 = new User(1, "Gautam", Enums.Department.Development, new ArrayList<>());
+		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		String inputInJSON = asJsonString(incident);
-		
+
 		when(inciServ.createIncident(Mockito.any(Incident.class))).thenReturn(incident);
-		
+
 		RequestBuilder request = MockMvcRequestBuilders.post("/incidents").accept(MediaType.APPLICATION_JSON).content(inputInJSON).contentType(MediaType.APPLICATION_JSON);
-		MvcResult result = mvc.perform(request).andReturn();
-		
+		MvcResult result = mockMvc.perform(request).andReturn();
+
 		String outputInJSON = result.getResponse().getContentAsString();
-		
+
 		assertThat(outputInJSON).isEqualTo(inputInJSON);
-		
+
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
 	}
 
 	@Test
 	void testUpdateIncident() throws Exception {
-		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
+		User user1 = new User(1, "Dan", Enums.Department.Development, new ArrayList<>());
+		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		String inputInJSON = asJsonString(incident);
-		
+
 		when(inciServ.createIncident(Mockito.any(Incident.class))).thenReturn(incident);
-		
+
 		RequestBuilder request = MockMvcRequestBuilders.post("/incidents").accept(MediaType.APPLICATION_JSON).content(inputInJSON).contentType(MediaType.APPLICATION_JSON);
-		MvcResult result = mvc.perform(request).andReturn();
-		
+		MvcResult result = mockMvc.perform(request).andReturn();
+
 		String createdJSON = result.getResponse().getContentAsString();
-		
-		
-		incident.setUserId(876);
-		incident.setInciPriority("Low");
-		incident.setInciStatus("Resolved");
+
+
+		incident.setUser(user1);
+		incident.setIncidentPriority(Enums.Priority.Low);
+		incident.setIncidentStatus(Enums.Status.Resolved);
 
 		String updatedInputInJSON = asJsonString(incident);
-		
+
 		when(inciServ.updateIncident(Mockito.any(Incident.class))).thenReturn(incident);
-		
+
 		RequestBuilder request2 = MockMvcRequestBuilders.put("/incidents").accept(MediaType.APPLICATION_JSON).content(updatedInputInJSON).contentType(MediaType.APPLICATION_JSON);
-		
-		MvcResult result2 = mvc.perform(request2).andReturn();
-		
+
+		MvcResult result2 = mockMvc.perform(request2).andReturn();
+
 		String outputInJSON = result2.getResponse().getContentAsString();
-		
+
 		assertThat(outputInJSON).isEqualTo(updatedInputInJSON).isNotEqualTo(inputInJSON);
-		
+
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
 	}
 
-	@Test
-	void testGetIncidentsByUser() throws Exception {
-		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		Incident incident2 = new Incident(19, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		Incident incident3 = new Incident(20, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
-		List<Incident> list = new ArrayList<>();
-		list.add(incident);
-		list.add(incident2);
-		list.add(incident3);
-		
-		when(inciDao.findByUserId(Mockito.anyLong())).thenReturn(list);
-		
-		RequestBuilder request = MockMvcRequestBuilders.get("/incidents/user/532").accept(MediaType.APPLICATION_JSON);
-		MvcResult result = mvc.perform(request).andReturn();
-
-		String expectRes = IncidentControllerTest.asJsonString(list);
-		String outputRes = result.getResponse().getContentAsString();
-		
-		assertThat(outputRes).isEqualTo(expectRes);
-		
-		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
-	}
+	//Need to rewrite this test case but in UserControllerTest
+//	@Test
+//	void testGetIncidentsByUser() throws Exception {
+//		User user1 = new User(1, "Dani", Enums.Department.Development, new ArrayList<>());
+//		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+//		Incident incident2 = new Incident(19, "Server DRC Up", "lorem ipsum dolor", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+//		Incident incident3 = new Incident(20, "Server cracking", "makes wierd sound", Enums.Priority.Low, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+//
+//		List<Incident> list = new ArrayList<>();
+//		list.add(incident);
+//		list.add(incident2);
+//		list.add(incident3);
+//
+//		when(inciDao.findByUserId(Mockito.anyInt())).thenReturn(list);
+//
+//		RequestBuilder request = MockMvcRequestBuilders.get("/incidents/user/532").accept(MediaType.APPLICATION_JSON);
+//		MvcResult result = mockMvc.perform(request).andReturn();
+//
+//		String expectRes = IncidentControllerTest.asJsonString(list);
+//		String outputRes = result.getResponse().getContentAsString();
+//
+//		assertThat(outputRes).isEqualTo(expectRes);
+//
+//		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+//	}
 
 	@Test
 	void testdeleteIncident() throws Exception {
-		Incident incident = new Incident(18, "Server DRC down", "abcdefgh", "High", "Hardware Issues", "New", 532, "Neha", "IT");
-		
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+
 //		Mockito.when(inciServ.deleteIncident(Mockito.anyLong())).thenReturn(incident);
-		
+
 		RequestBuilder request = MockMvcRequestBuilders.delete("/incidents/18");
-		MvcResult result = mvc.perform(request).andReturn();
-		
+		MvcResult result = mockMvc.perform(request).andReturn();
+
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
-		
+
 	}
 	
     /* Maps and Object to JSON String */
