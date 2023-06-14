@@ -135,6 +135,7 @@ function AddIncident() {
 							<FormGroup>
 								<Label for="inciName">Name</Label>
 								<Input
+									required="required"
 									id="inciName"
 									name="inciName"
 									placeholder="Enter Incident Name"
@@ -165,12 +166,13 @@ function AddIncident() {
 					<FormGroup>
 						<Row>
 							<Col md={2}>
-								<Label>Priority :</Label>
+								<Label >Priority :</Label>
 							</Col>
 
 							<Col md={2}>
 								<FormGroup check>
 									<Input
+										required="required"
 										name="radio1"
 										type="radio"
 										value={"Critical"}
@@ -184,6 +186,7 @@ function AddIncident() {
 							<Col md={2}>
 								<FormGroup check>
 									<Input
+										required="required"
 										name="radio1"
 										type="radio"
 										value={"High"}
@@ -232,6 +235,7 @@ function AddIncident() {
 							<Col md={2}>
 								<FormGroup check>
 									<Input
+										required="required"
 										name="radio2"
 										type="radio"
 										value={"Hardware Issues"}
@@ -280,6 +284,7 @@ function AddIncident() {
 							<Col md={2}>
 								<FormGroup check>
 									<Input
+										required="required"
 										name="radio3"
 										type="radio"
 										value={"New"}
@@ -338,6 +343,7 @@ function AddIncident() {
 						<FormGroup>
 							<Label for="userId">User ID</Label>
 							<Input
+								required="required"
 								id="userId"
 								name="userId"
 								placeholder="Enter User Id"
