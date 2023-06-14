@@ -102,6 +102,17 @@ function Navbar() {
 								</NavLink>
 							</li>
 						</ul>
+
+						<ul class="navbar-nav ms-3">
+							<li class="nav-item me-3">
+								<NavLink
+									to="/addUser"
+									className="nav-link d-flex align-items-center"
+								>
+									<span>Create New User</span>
+								</NavLink>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</nav>

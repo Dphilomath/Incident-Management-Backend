@@ -55,7 +55,7 @@ function Home() {
 	};
 
 	if (location.state !== null) {
-		console.log("Vlaue has been passed !!");
+		console.log("Value has been passed !!");
 		// const filteredInci = incidents.filter((item) => { return item.userId.toString().includes(location.state.id) });
 		// setInci(filteredInci);
 		console.log(typeof location.state.id);

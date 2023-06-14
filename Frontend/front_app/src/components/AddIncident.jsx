@@ -49,30 +49,6 @@ function AddIncident() {
 		e.preventDefault();
 	}
 
-	const handlePriority = (e) => {
-		// console.log(e.target.value);
-		incident.inciPriority = e.target.value;
-		setIncidents({ ...incis, inciPriority: e.target.value });
-		console.log(incis);
-	};
-
-	const handleStatus = (e) => {
-		incident.inciStatus = e.target.value;
-		setIncidents({ ...incis, inciStatus: e.target.value });
-		console.log(incis);
-	};
-
-	const handleCategory = (e) => {
-		incident.inciCategory = e.target.value;
-		setIncidents({ ...incis, inciCategory: e.target.value });
-		console.log(incis);
-	};
-
-	const handleDept = (e) => {
-		incident.userDept = e.target.value;
-		setIncidents({ ...incis, userDept: e.target.value });
-	};
-
 	const postData = (data) => {
 		axios.post(`${base_url}/incidents`, data).then(
 			(response) => {
@@ -101,6 +77,34 @@ function AddIncident() {
 			}
 		);
 	};
+	
+	const handlePriority = (e) => {
+		// console.log(e.target.value);
+		incident.inciPriority = e.target.value;
+		setIncidents({ ...incis, inciPriority: e.target.value });
+		console.log(incis);
+	};
+
+	const handleStatus = (e) => {
+		incident.inciStatus = e.target.value;
+		setIncidents({ ...incis, inciStatus: e.target.value });
+		console.log(incis);
+	};
+
+	const handleCategory = (e) => {
+		incident.inciCategory = e.target.value;
+		setIncidents({ ...incis, inciCategory: e.target.value });
+		console.log(incis);
+	};
+
+	const handleDept = (e) => {
+		incident.userDept = e.target.value;
+		setIncidents({ ...incis, userDept: e.target.value });
+	};
+
+	
+
+	
 
 	return (
 		<div>
