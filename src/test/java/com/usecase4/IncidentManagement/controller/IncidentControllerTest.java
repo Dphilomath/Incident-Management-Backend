@@ -133,8 +133,8 @@ class IncidentControllerTest {
 
 
 		incident.setUser(user1);
-		incident.setIncidentPriority(Enums.Priority.Low);
-		incident.setIncidentStatus(Enums.Status.Resolved);
+		incident.setInciPriority(Enums.Priority.Low);
+		incident.setInciStatus(Enums.Status.Resolved);
 
 		String updatedInputInJSON = asJsonString(incident);
 

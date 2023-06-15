@@ -66,7 +66,7 @@ class IncidentServiceImplTest {
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		Optional<Incident> incident = Optional.of(incident1);
-		long id = incident.get().getIncidentId();
+		long id = incident.get().getInciId();
 		System.out.println("id = " + id);
 
 		// Even Though the function getIncident returns the Incident created we are defining what
@@ -103,7 +103,7 @@ class IncidentServiceImplTest {
 		inciDao.save(origInci);
 
 		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>());
-		actualInci.setIncidentPriority(Enums.Priority.Low);
+		actualInci.setInciPriority(Enums.Priority.Low);
 		actualInci.setUser(user2);
 
 
@@ -117,9 +117,9 @@ class IncidentServiceImplTest {
 		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		inciDao.save(incident);
 
-		inciservice.deleteIncident(incident.getIncidentId());
+		inciservice.deleteIncident(incident.getInciId());
 
-		assertThat(inciDao.findById(Integer.toUnsignedLong(incident.getIncidentId())).isEmpty());
+		assertThat(inciDao.findById(Integer.toUnsignedLong(incident.getInciId())).isEmpty());
 	}
 
 }

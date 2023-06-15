@@ -16,25 +16,25 @@ public class Incident {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "incident_id")
-	private Integer incidentId;
+	private Integer inciId;
 
 	@NotNull
-	private String incidentName;
+	private String inciName;
 
 	@NotNull
 	private String description;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Enums.Priority incidentPriority;
+	private Enums.Priority inciPriority;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Enums.Status incidentStatus;
+	private Enums.Status inciStatus;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Enums.Category incidentCategory;
+	private Enums.Category inciCategory;
 
 	@NotNull
 	@JsonBackReference(value = "user-incident")

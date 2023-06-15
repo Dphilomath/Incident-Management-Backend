@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserServiceTest {
+public class UserServiceTestImplTest {
 
     @Mock
     private UserRepository userRepository;
