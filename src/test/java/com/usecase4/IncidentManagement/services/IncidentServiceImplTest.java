@@ -1,6 +1,6 @@
 package com.usecase4.IncidentManagement.services;
 
-import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.dao.IncidentRepository;
 import com.usecase4.IncidentManagement.entity.Enums;
 import com.usecase4.IncidentManagement.entity.Incident;
 import com.usecase4.IncidentManagement.entity.User;
@@ -23,8 +23,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class IncidentServiceImplTest {
 
-	@MockBean
-	private IncidentDao inciDao;
+    @MockBean
+    private IncidentRepository inciDao;
 
 	@Autowired
 	private IncidentService inciservice;

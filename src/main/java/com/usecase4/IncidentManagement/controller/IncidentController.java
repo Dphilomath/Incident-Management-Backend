@@ -1,6 +1,6 @@
 package com.usecase4.IncidentManagement.controller;
 
-import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.dao.IncidentRepository;
 import com.usecase4.IncidentManagement.entity.Incident;
 import com.usecase4.IncidentManagement.services.IncidentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class IncidentController {
 	private IncidentService incidentService;
 
 	@Autowired
-	private IncidentDao inciDao;
+	private IncidentRepository inciDao;
 
 	@GetMapping("/home")
 	public String home() {

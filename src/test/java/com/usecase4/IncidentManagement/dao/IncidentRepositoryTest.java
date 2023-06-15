@@ -12,20 +12,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author LENOVO
- *
  */
 @SpringBootTest
-class IncidentDaoTest {
+class IncidentRepositoryTest {
 
-	@Autowired
-	private IncidentDao inciDao;
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    @Autowired
+    private IncidentRepository inciDao;
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
 	/**
 	 * @throws java.lang.Exception

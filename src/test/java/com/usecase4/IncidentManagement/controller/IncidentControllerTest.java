@@ -1,7 +1,7 @@
 package com.usecase4.IncidentManagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.dao.IncidentRepository;
 import com.usecase4.IncidentManagement.entity.Enums;
 import com.usecase4.IncidentManagement.entity.Incident;
 import com.usecase4.IncidentManagement.entity.User;
@@ -41,8 +41,8 @@ class IncidentControllerTest {
 	@MockBean
 	private IncidentService inciServ;
 
-	@MockBean
-	private IncidentDao inciDao;
+    @MockBean
+    private IncidentRepository inciDao;
 
 	@BeforeEach
 	void setUp() throws Exception {

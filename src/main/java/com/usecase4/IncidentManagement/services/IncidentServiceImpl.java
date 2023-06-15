@@ -1,6 +1,6 @@
 package com.usecase4.IncidentManagement.services;
 
-import com.usecase4.IncidentManagement.dao.IncidentDao;
+import com.usecase4.IncidentManagement.dao.IncidentRepository;
 import com.usecase4.IncidentManagement.entity.Incident;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,50 +14,50 @@ public class IncidentServiceImpl implements IncidentService {
 //	List<Incident> list;
 
 	@Autowired
-	private IncidentDao inciDao;
+	private IncidentRepository incidentRepository;
 
 	public IncidentServiceImpl() {
 
 	}
 
-	public IncidentServiceImpl(IncidentDao inciDao) {
+	public IncidentServiceImpl(IncidentRepository incidentRepository) {
 
-		this.inciDao = inciDao;
+		this.incidentRepository = incidentRepository;
 	}
 
 	@Override
 	public List<Incident> getIncidents() {
 		
-		return inciDao.findAll();
+		return incidentRepository.findAll();
 	}
 
 
 	@Override
 	public Optional<Incident> getIncident(long incidentId) {
 
-		return inciDao.findById(incidentId);
+		return incidentRepository.findById(incidentId);
 	}
 
 	@Override
-	public Incident createIncident(Incident inci) {
+	public Incident createIncident(Incident incident) {
 
-		inciDao.save(inci);
+		incidentRepository.save(incident);
 
-		return inci;
+		return incident;
 	}
 
 	@Override
-	public Incident updateIncident(Incident inci) {
-		
-		inciDao.save(inci);
-		
-		return inci;
+	public Incident updateIncident(Incident incident) {
+
+		incidentRepository.save(incident);
+
+		return incident;
 	}
 
 	@Override
 	public void deleteIncident(long incidentId) {
-		
-		inciDao.deleteById(incidentId);
+
+		incidentRepository.deleteById(incidentId);
 		
 	}
 
