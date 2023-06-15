@@ -1,10 +1,12 @@
 package com.usecase4.IncidentManagement.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.NoSuchElementException;
 
@@ -33,5 +35,11 @@ public class ExceptionHandlerClass {
     public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<String> handleNonExistentEndpoints(HttpServletRequest request) {
+        String message = "Endpoint not found: " + request.getRequestURI();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
 }

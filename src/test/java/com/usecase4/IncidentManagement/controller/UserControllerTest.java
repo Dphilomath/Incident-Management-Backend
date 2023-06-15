@@ -62,7 +62,7 @@ public class UserControllerTest {
         User existingUser = new User(1, "daniyal", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
         User updatedUser = new User(1, "Mahmood", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
-        Mockito.lenient().when(userService.getUserById(userId)).thenReturn(Optional.of(existingUser));
+        when(userService.getUserById(userId)).thenReturn(existingUser);
         when(userService.updateUser(eq(userId), any(User.class))).thenReturn(updatedUser);
 
         // Act

@@ -12,10 +12,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,6 +41,47 @@ public class UserServiceTestImplTest {
         // Verify the behavior
         verify(userRepository, times(1)).save(user);
         assertEquals(user, createdUser);
+    }
+
+    @Test
+    public void testGetUserById_ValidId() {
+        // Mock user ID
+        Integer userId = 1;
+
+        // Create a mock User object
+        User user = new User();
+        user.setUserId(userId);
+        user.setUserName("john_doe");
+
+        // Mock the existsById method of userRepo to return true
+        when(userRepository.existsById(userId)).thenReturn(true);
+
+        // Mock the findById method of userRepo to return the mock User object
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        // Call the getUserById method
+        User retrievedUser = userService.getUserById(userId);
+
+        // Verify the behavior
+        verify(userRepository, times(1)).existsById(userId);
+        verify(userRepository, times(1)).findById(userId);
+        assertEquals(user, retrievedUser);
+    }
+
+    @Test
+    public void testGetUserById_InvalidId() {
+        // Mock user ID
+        Integer userId = 1;
+
+        // Mock the existsById method of userRepo to return false
+        when(userRepository.existsById(userId)).thenReturn(false);
+
+        // Use assertThrows to handle the exception
+        assertThrows(NoSuchElementException.class, () -> userService.getUserById(userId));
+
+        // Verify that the existsById method was called once
+        verify(userRepository, times(1)).existsById(userId);
+        verify(userRepository, never()).findById(userId);
     }
 
     @Test
@@ -93,17 +134,34 @@ public class UserServiceTestImplTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUser_ValidId() {
         // Mock user ID
         Integer userId = 1;
 
+        // Mock the existsById method of UserRepository
+        when(userRepository.existsById(userId)).thenReturn(true);
 
-        // Call the userService method
+        // Call the deleteUser method
         boolean result = userService.deleteUser(userId);
 
-        // Verify the result
+        // Verify the behavior
         assertTrue(result);
         verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    public void testDeleteUser_NonExistentId() {
+        // Mock user ID
+        Integer userId = 1;
+
+        // Mock the existsById method of UserRepository
+        when(userRepository.existsById(userId)).thenReturn(false);
+
+        // Use assertThrows to handle the exception
+        assertThrows(NoSuchElementException.class, () -> userService.deleteUser(userId));
+
+        // Verify that the deleteById method was not called
+        verify(userRepository, never()).deleteById(userId);
     }
 }
 

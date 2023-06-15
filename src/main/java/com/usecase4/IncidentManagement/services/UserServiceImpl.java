@@ -26,8 +26,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(Integer userId) {
-        return userRepo.findById(userId);
+    public User getUserById(Integer userId) {
+        if (userRepo.existsById(userId))
+            return userRepo.findById(userId).get();
+        else throw new NoSuchElementException();
     }
 
     @Override
@@ -36,15 +38,19 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setUserName(updatedUser.getUserName());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
             user.setDepartment(updatedUser.getDepartment());
             return userRepo.save(user);
         }
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("No user with userId:" + userId + " exists");
     }
 
     @Override
-    public boolean deleteUser(Integer userId) {
-        userRepo.deleteById(userId);
+    public boolean deleteUser(Integer userId) throws NoSuchElementException {
+        if (userRepo.existsById(userId))
+            userRepo.deleteById(userId);
+        else throw new NoSuchElementException();
         return true;
     }
 

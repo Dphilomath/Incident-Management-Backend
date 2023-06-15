@@ -11,7 +11,7 @@ public interface UserService {
     User createUser(User user);
 
     //Retrieve or get student on the basis of Primary Key
-    Optional<User> getUserById(Integer userId);
+    User getUserById(Integer userId);
 
     //Update
     User updateUser(Integer userId, User user);

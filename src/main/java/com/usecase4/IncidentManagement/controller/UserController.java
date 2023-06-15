@@ -36,7 +36,8 @@ public class UserController {
     //http://localhost:8080/getstudentbyid/1
     @GetMapping("/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Integer userId) {
-        return userService.getUserById(userId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//        return userService.getUserById(userId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.getUserById(userId));
     }
 
     @GetMapping("/user/incidents/{id}")
