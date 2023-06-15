@@ -13,7 +13,7 @@ public interface IncidentService {
 
 	Incident createIncident(Incident incident);
 
-	Incident updateIncident(Incident incident);
+	Incident updateIncident(Long incidentId, Incident updatedIncident);
 
 	void deleteIncident(long incidentId);
 }

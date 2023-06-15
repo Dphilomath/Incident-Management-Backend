@@ -138,7 +138,7 @@ class IncidentControllerTest {
 
 		String updatedInputInJSON = asJsonString(incident);
 
-		when(inciServ.updateIncident(Mockito.any(Incident.class))).thenReturn(incident);
+		when(inciServ.updateIncident(18L, Mockito.any(Incident.class))).thenReturn(incident);
 
 		RequestBuilder request2 = MockMvcRequestBuilders.put("/incidents").accept(MediaType.APPLICATION_JSON).content(updatedInputInJSON).contentType(MediaType.APPLICATION_JSON);
 

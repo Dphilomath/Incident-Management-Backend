@@ -14,10 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -91,24 +94,80 @@ class IncidentServiceImplTest {
 	}
 
 	@Test
-	void updateIncidentTest() {
-//		Original incident that remains untouched to be compared
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+	public void testUpdateIncident_Success() {
+		// Create a mock incident
+		Long incidentId = 1L;
+		Incident existingIncident = new Incident();
+		existingIncident.setInciId(Math.toIntExact(incidentId));
+		existingIncident.setDescription("Existing Description");
+		existingIncident.setInciStatus(Enums.Status.Rejected);
+		existingIncident.setInciPriority(Enums.Priority.High);
+		existingIncident.setInciCategory(Enums.Category.Software_Issues);
 
-		Incident origInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
-
-//		Incident to be Updated
-		Incident actualInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
-
-		inciDao.save(origInci);
-
-		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
-		actualInci.setInciPriority(Enums.Priority.Low);
-		actualInci.setUser(user2);
+		// Create a mock updated incident
+		Incident updatedIncident = new Incident();
+		updatedIncident.setDescription("Updated Description");
+		updatedIncident.setInciStatus(Enums.Status.Resolved);
 
 
-		assertThat(inciservice.updateIncident(actualInci)).isEqualTo(actualInci).isNotEqualTo(origInci);
+		// Mock the findById method of the IncidentRepository to return the existing incident
+		when(inciDao.findById(incidentId)).thenReturn(Optional.of(existingIncident));
+
+		// Mock the save method of the IncidentRepository to return the updated incident
+		when(inciDao.save(existingIncident)).thenReturn(existingIncident);
+
+		// Call the updateIncident method
+		Incident result = inciservice.updateIncident(incidentId, updatedIncident);
+
+		// Verify the behavior
+		verify(inciDao, times(1)).findById(incidentId);
+		verify(inciDao, times(1)).save(existingIncident);
+		assertEquals(updatedIncident.getDescription(), result.getDescription());
+		assertEquals(updatedIncident.getInciStatus(), result.getInciStatus());
+		// Verify other updated fields as needed
 	}
+
+	@Test
+	public void testUpdateIncident_IncidentNotFound() {
+		// Create a mock incident ID
+		Long incidentId = 1L;
+
+		// Create a mock updated incident
+		Incident updatedIncident = new Incident();
+		updatedIncident.setDescription("Updated Description");
+		updatedIncident.setInciStatus(Enums.Status.In_Progress);
+		// Set other updated fields as needed
+
+		// Mock the findById method of the IncidentRepository to return an empty optional
+		when(inciDao.findById(incidentId)).thenReturn(Optional.empty());
+
+		// Use assertThrows to handle the exception
+		assertThrows(NoSuchElementException.class, () -> inciservice.updateIncident(incidentId, updatedIncident));
+
+		// Verify that the findById method was called once
+		verify(inciDao, times(1)).findById(incidentId);
+		verify(inciDao, never()).save(any());
+	}
+
+//	@Test
+//	void updateIncidentTest() {
+////		Original incident that remains untouched to be compared
+//		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+//
+//		Incident origInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+//
+////		Incident to be Updated
+//		Incident actualInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+//
+//		inciDao.save(origInci);
+//
+//		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+//		actualInci.setInciPriority(Enums.Priority.Low);
+//		actualInci.setUser(user2);
+//
+//
+//		assertThat(inciservice.updateIncident(18L, actualInci)).isEqualTo(actualInci).isNotEqualTo(origInci);
+//	}
 
 	@Test
 	void deleteIncidentTest() {

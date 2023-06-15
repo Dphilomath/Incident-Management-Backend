@@ -35,8 +35,7 @@ public class IncidentController {
 	}
 	
 	@GetMapping("/incidents/{incidentId}")
-	public Optional<Incident> getIncident(@PathVariable String incidentId)
-	{
+	public Optional<Incident> getIncident(@PathVariable String incidentId) {
 		return this.incidentService.getIncident(Long.parseLong(incidentId));
 	}
 
@@ -46,9 +45,9 @@ public class IncidentController {
 		return this.incidentService.createIncident(inci);
 	}
 
-	@PutMapping("/incidents")
-	public Incident updateIncident(@RequestBody Incident inci) {
-		return this.incidentService.updateIncident(inci);
+	@PutMapping("/incidents/{incidentId}")
+	public Incident updateIncident(@PathVariable("incidentId") Long incidentId, @RequestBody Incident inci) {
+		return this.incidentService.updateIncident(incidentId, inci);
 	}
 
 //	@GetMapping("/incidents/user/{userId}")
