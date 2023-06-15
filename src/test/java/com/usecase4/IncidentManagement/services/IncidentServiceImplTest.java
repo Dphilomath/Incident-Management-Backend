@@ -44,7 +44,7 @@ class IncidentServiceImplTest {
 
 //		inciservice.getIncidents();
 //		verify(inciDao).findAll();
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		Incident incident2 = new Incident(18, "DRC down", "random description 2", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
@@ -61,7 +61,7 @@ class IncidentServiceImplTest {
 	
 	@Test
 	void testGetIncident() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
@@ -78,7 +78,7 @@ class IncidentServiceImplTest {
 
 	@Test
 	void createIncidentTest() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
@@ -93,7 +93,7 @@ class IncidentServiceImplTest {
 	@Test
 	void updateIncidentTest() {
 //		Original incident that remains untouched to be compared
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident origInci = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
@@ -102,7 +102,7 @@ class IncidentServiceImplTest {
 
 		inciDao.save(origInci);
 
-		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>());
+		User user2 = new User(1, "Chetna", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 		actualInci.setInciPriority(Enums.Priority.Low);
 		actualInci.setUser(user2);
 
@@ -112,7 +112,7 @@ class IncidentServiceImplTest {
 
 	@Test
 	void deleteIncidentTest() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>());
+		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		inciDao.save(incident);

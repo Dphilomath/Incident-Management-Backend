@@ -32,8 +32,8 @@ public class UserControllerTest {
     @Test
     public void testGetAllUsers() {
         // Arrange
-        User user1 = new User(1, "daniyal", Enums.Department.HR, new ArrayList<>());
-        User user2 = new User(2, "Mahmood", Enums.Department.HR, new ArrayList<>());
+        User user1 = new User(1, "daniyal", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        User user2 = new User(2, "Mahmood", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
         Incident incident1 = new Incident(2, "Issue 1", "description 1", Enums.Priority.Critical, Enums.Status.New, Enums.Category.Accessory_Issues, user1);
         Incident incident2 = new Incident(5, "Issue 2", "description 2", Enums.Priority.Critical, Enums.Status.New, Enums.Category.Accessory_Issues, user1);
@@ -59,8 +59,8 @@ public class UserControllerTest {
     public void testUpdateUser() {
         // Arrange
         Integer userId = 1;
-        User existingUser = new User(1, "daniyal", Enums.Department.HR, new ArrayList<>());
-        User updatedUser = new User(1, "Mahmood", Enums.Department.HR, new ArrayList<>());
+        User existingUser = new User(1, "daniyal", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        User updatedUser = new User(1, "Mahmood", Enums.Department.HR, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
         Mockito.lenient().when(userService.getUserById(userId)).thenReturn(Optional.of(existingUser));
         when(userService.updateUser(eq(userId), any(User.class))).thenReturn(updatedUser);

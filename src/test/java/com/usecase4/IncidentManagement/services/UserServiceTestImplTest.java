@@ -30,7 +30,7 @@ public class UserServiceTestImplTest {
     @Test
     public void testCreateUser() {
         // Create a mock User object
-        User user = new User(1, "john", Enums.Department.HR, null);
+        User user = new User(1, "john", Enums.Department.HR, null, "xyz@gmail.com", "9457586425");
 
         // Mock the save method of UserRepository to return the mock User object
         when(userRepository.save(user)).thenReturn(user);
@@ -48,7 +48,7 @@ public class UserServiceTestImplTest {
         // Mock user ID
         Integer userId = 1;
 
-        User user = new User(userId, "John Doe", Enums.Department.HR, null);
+        User user = new User(userId, "John Doe", Enums.Department.HR, null, "xyz@gmail.com", "9457586425");
 
         // Create a user with incidents
         List<Incident> incidents = new ArrayList<>();
@@ -77,8 +77,8 @@ public class UserServiceTestImplTest {
         // Create a list of users
         List<User> users = new ArrayList<>();
 
-        users.add(new User(1, "John Doe", Enums.Department.HR, null));
-        users.add(new User(5, "Dig Doe", Enums.Department.HR, null));
+        users.add(new User(1, "John Doe", Enums.Department.HR, null, "xyz@gmail.com", "9457586425"));
+        users.add(new User(5, "Dig Doe", Enums.Department.HR, null, "xyz@gmail.com", "9457586425"));
 
         // Mock the userRepository to return the list of users
         when(userRepository.findAll()).thenReturn(users);

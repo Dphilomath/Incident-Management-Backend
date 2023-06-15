@@ -32,4 +32,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Incident> incidents = new ArrayList<>();
 
+    private String email;
+
+    private String phone;
+
 }
