@@ -2,11 +2,14 @@ package com.usecase4.IncidentManagement.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
-    @NotNull
+    @NotBlank(message = "Name is mandatory")
     private String userName;
 
     @NotNull
@@ -32,6 +35,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Incident> incidents = new ArrayList<>();
 
+    @Email(message = "Email should be valid")
     private String email;
 
     private String phone;
