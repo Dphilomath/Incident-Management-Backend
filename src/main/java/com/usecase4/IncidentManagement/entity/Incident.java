@@ -1,6 +1,7 @@
 package com.usecase4.IncidentManagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.usecase4.IncidentManagement.services.util.UserSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -37,7 +38,8 @@ public class Incident {
 	private Enums.Category inciCategory;
 
 	@NotNull
-	@JsonBackReference(value = "user-incident")
+//	@JsonBackReference(value = "user-incident")
+	@JsonSerialize(using = UserSerializer.class)
 //	@ManyToOne(cascade = CascadeType.MERGE)
 	@ManyToOne
 	@JoinColumn(name = "user_id")
