@@ -47,7 +47,7 @@ class IncidentServiceImplTest {
 
 //		inciservice.getIncidents();
 //		verify(inciDao).findAll();
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+		User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		Incident incident2 = new Incident(18, "DRC down", "random description 2", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
@@ -64,7 +64,7 @@ class IncidentServiceImplTest {
 	
 	@Test
 	void testGetIncident() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
@@ -81,7 +81,7 @@ class IncidentServiceImplTest {
 
 	@Test
 	void createIncidentTest() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
@@ -171,7 +171,7 @@ class IncidentServiceImplTest {
 
 	@Test
 	void deleteIncidentTest() {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		inciDao.save(incident);

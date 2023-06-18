@@ -9,10 +9,10 @@ public class Enums {
     }
 
     public enum Department {
-        Development,
+        Marketing,
         IT,
         HR,
-        ISG
+        Finance
     }
 
     public enum Category {

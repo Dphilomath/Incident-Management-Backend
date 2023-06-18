@@ -54,7 +54,7 @@ class IncidentControllerTest {
 
 	@Test
 	void testGetIncidents() throws Exception {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+		User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
 
 		Incident incident1 = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 		Incident incident2 = new Incident(19, "Server DRC Up", "lorem ipsum dolor", Enums.Priority.Critical, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
@@ -79,8 +79,8 @@ class IncidentControllerTest {
 
 	@Test
 	void testGetIncident() throws Exception {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
-		Incident origData = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+        User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        Incident origData = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		// Need to convert origData into Optional type. 
 		Optional<Incident> incident = Optional.ofNullable(origData);
@@ -100,8 +100,8 @@ class IncidentControllerTest {
 
 	@Test
 	void testCreateIncident() throws Exception {
-		User user1 = new User(1, "Gautam", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
-		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+        User user1 = new User(1, "Gautam", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		String inputInJSON = asJsonString(incident);
 
@@ -119,8 +119,8 @@ class IncidentControllerTest {
 
 	@Test
 	void testUpdateIncident() throws Exception {
-		User user1 = new User(1, "Dan", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
-		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+        User user1 = new User(1, "Dan", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 		String inputInJSON = asJsonString(incident);
 
@@ -179,8 +179,8 @@ class IncidentControllerTest {
 
 	@Test
 	void testdeleteIncident() throws Exception {
-		User user1 = new User(1, "Daniyal", Enums.Department.Development, new ArrayList<>(), "xyz@gmail.com", "9457586425");
-		Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
+        User user1 = new User(1, "Daniyal", Enums.Department.Marketing, new ArrayList<>(), "xyz@gmail.com", "9457586425");
+        Incident incident = new Incident(18, "Server DRC down", "random description", Enums.Priority.High, Enums.Status.In_Progress, Enums.Category.Accessory_Issues, user1);
 
 //		Mockito.when(inciServ.deleteIncident(Mockito.anyLong())).thenReturn(incident);
 
